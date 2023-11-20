@@ -1,10 +1,10 @@
-def secretEntity(item) -> dict:
+def secretEntity(secret) -> dict:
     return {
-        'id': str(item['_id']),
-        'secret': item['secret'],
-        'url': item['url'],
-        'password': item['password']
+        'id': str(secret['_id']),
+        'secret': secret['secret'],
+        'url': secret['url'],
+        'password': secret['password']
     }
 
 def secretsEntity(entity) -> list:
-    return [secretEntity(item) for item in entity]
+    return [secretEntity(secret) for secret in entity]
