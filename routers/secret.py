@@ -2,7 +2,9 @@ from fastapi import APIRouter
 from models.secret import Secret
 from config.db import collection_name
 from starlette.requests import Request
-from schemas.secret import secretEntity, secretsEntity
+from schemas.secret import secretEntity
+from service.service import random_secret_key
+
 
 router = APIRouter()
 
@@ -14,6 +16,7 @@ async def ping():
 
 @router.post('/generate')
 async def post_secret(secret: Secret):
-    collection_name.insert_one((dict(secret)))
-    return secretsEntity(collection_name.find())
+    secret.secret_key = random_secret_key()
+    id = collection_name.insert_one((dict(secret))).inserted_id
+    return secretEntity(collection_name.find_one({'_id': id}))['secret_key']
 

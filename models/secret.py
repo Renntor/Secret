@@ -3,5 +3,5 @@ from pydantic import BaseModel
 
 class Secret(BaseModel):
     secret: str
-    url: str
+    secret_key: str
     password: str
