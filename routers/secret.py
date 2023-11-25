@@ -3,8 +3,10 @@ from models.secretin import Secret, SecretPost, SecretGet
 from config.db import collection_name
 from schemas.secret import secretEntity
 from service.service import random_secret_key
+from passlib.context import CryptContext
 
 
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 router = APIRouter()
 
 
@@ -12,18 +14,24 @@ router = APIRouter()
 async def ping():
     return {"Success": True}
 
-fields = {'secret': "type your  secret", "password": "password"}
+
 @router.post('/generate')
 async def post_secret(secret: SecretPost):
     secret_key = random_secret_key()
-    new_secret = Secret(secret=secret.secret, secret_key=secret_key, password=secret.password)
-    id = collection_name.insert_one((dict(new_secret))).inserted_id
-    return secretEntity(collection_name.find_one({'_id': id}))['secret_key']
+    password = pwd_context.hash(secret.password)
+    new_secret = Secret(secret=secret.secret, secret_key=secret_key, password=password)
+    id_document = collection_name.insert_one((dict(new_secret))).inserted_id
+    return secretEntity(collection_name.find_one({'_id': id_document}))['secret_key']
 
 
 @router.post('/secrets/{secret_key}')
 async def get_secret(password: SecretGet, secret_key: str):
-    secret = collection_name.find_one({'password': password.password, 'secret_key': secret_key})
-    if secret is not None:
-        return secretEntity(secret)['secret']
-    return secret
+    secret = collection_name.find_one({'secret_key': secret_key})
+    try:
+        # password verification
+        verification = pwd_context.verify(password.password, secretEntity(secret)['password'])
+        if secret is not None and verification:
+            collection_name.delete_one({'secret_key': secret_key})
+            return secretEntity(secret)['secret']
+    except (ValueError, TypeError):
+        return None

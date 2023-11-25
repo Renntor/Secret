@@ -6,5 +6,6 @@ def secretEntity(secret) -> dict:
         'password': secret['password']
     }
 
+
 def secretsEntity(entity) -> list:
     return [secretEntity(secret) for secret in entity]
