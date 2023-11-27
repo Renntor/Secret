@@ -3,7 +3,8 @@ def secretEntity(secret) -> dict:
         'id': str(secret['_id']),
         'secret': secret['secret'],
         'secret_key': secret['secret_key'],
-        'password': secret['password']
+        'password': secret['password'],
+        'inserted': secret['inserted']
     }
 
 

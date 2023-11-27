@@ -1,3 +1,4 @@
+from datetime import datetime
 from pydantic import BaseModel
 
 
@@ -11,3 +12,4 @@ class SecretPost(SecretGet):
 
 class Secret(SecretPost):
     secret_key: str
+    inserted: datetime
