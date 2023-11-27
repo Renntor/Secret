@@ -17,7 +17,7 @@ async def ping():
 
 
 @router.post('/generate')
-async def post_secret(secret: SecretPost):
+async def post_secret(secret: SecretPost) -> str:
     secret_key = random_secret_key()
     password = pwd_context.hash(secret.password)
     secret = crypto_secret(secret.secret)
@@ -27,7 +27,7 @@ async def post_secret(secret: SecretPost):
 
 
 @router.post('/secrets/{secret_key}')
-async def get_secret(password: SecretGet, secret_key: str):
+async def get_secret(password: SecretGet, secret_key: str) -> str:
     secret = collection_name.find_one({'secret_key': secret_key})
     try:
         # password verification
@@ -36,4 +36,4 @@ async def get_secret(password: SecretGet, secret_key: str):
             collection_name.delete_one({'secret_key': secret_key})
             return decrypto_secret(secretEntity(secret)['secret'])
     except (ValueError, TypeError):
-        return {}
+        return ''
