@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from models.secretin import Secret, SecretPost, SecretGet
+from models.secret import Secret, SecretPost, SecretGet
 from config.db import collection_name
 from schemas.secret import secretEntity, secret_keyEntity
 from service.service import random_secret_key, crypto_secret, decrypto_secret
@@ -28,9 +28,6 @@ async def post_secret(secret: SecretPost) -> dict:
 async def get_secret(password: SecretGet, secret_key: str) -> dict:
     """
     Get secret and delete him
-    :param password:
-    :param secret_key:
-    :return:
     """
     secret = collection_name.find_one({'secret_key': secret_key})
     try:
