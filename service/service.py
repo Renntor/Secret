@@ -28,6 +28,11 @@ def crypto_secret(text: str) -> bytes:
     return fernet.encrypt(bytes(text.encode()))
 
 
-def decrypto_secret(data: bytes) -> str:
+def decrypto_secret(data: bytes) -> dict:
+    """
+    decrypto secret
+    :param data:
+    :return:
+    """
     fernet = Fernet(os.environ.get('HASH_KEY'))
-    return fernet.decrypt(data).decode()
+    return {'secret': fernet.decrypt(data).decode()}

@@ -7,6 +7,11 @@ def secretEntity(secret) -> dict:
         'inserted': secret['inserted']
     }
 
+def secret_keyEntity(secret) -> dict:
+    return {
+        'secret_key': secret['secret_key']
+    }
+
 
 def secretsEntity(entity) -> list:
     return [secretEntity(secret) for secret in entity]
