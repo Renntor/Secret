@@ -1,5 +1,5 @@
-from string import digits, ascii_letters
-from random import sample, shuffle
+from random import shuffle
+
 from dotenv import load_dotenv
 from cryptography.fernet import Fernet
 import os
@@ -7,13 +7,12 @@ import os
 load_dotenv()
 
 
-def random_secret_key() -> str:
+def random_secret_key(password: str) -> str:
     """
     generator secret_key
     :return:
     """
-    symbol = tuple(digits + ascii_letters)
-    secret_key = sample(symbol, counts=[5]*62, k=50)
+    secret_key = list(password[3:])
     shuffle(secret_key)
     return ''.join(secret_key)
 
