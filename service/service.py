@@ -12,7 +12,7 @@ def random_secret_key(password: str) -> str:
     generator secret_key
     :return:
     """
-    secret_key = list(password[3:])
+    secret_key = list(password[3:].replace('/', '!'))
     shuffle(secret_key)
     return ''.join(secret_key)
 
