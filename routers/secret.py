@@ -16,8 +16,8 @@ async def post_secret(secret: SecretPost) -> dict:
     """
     Post secret with password
     """
-    secret_key = random_secret_key()
     password = pwd_context.hash(secret.password)
+    secret_key = random_secret_key(password)
     secret = crypto_secret(secret.secret)
     new_secret = Secret(secret=secret, secret_key=secret_key, password=password, inserted=datetime.utcnow())
     id_document = collection_name.insert_one((dict(new_secret))).inserted_id
