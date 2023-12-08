@@ -36,5 +36,7 @@ async def get_secret(password: SecretGet, secret_key: str) -> dict:
         if secret is not None and verification:
             collection_name.delete_one({'secret_key': secret_key})
             return decrypto_secret(secretEntity(secret)['secret'])
+        else:
+            return {'secret': None}
     except (ValueError, TypeError):
         return {'secret': None}

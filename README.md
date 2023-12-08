@@ -16,6 +16,8 @@ ___
 ### Teach Stack
 ___
 - [Docker](https://www.docker.com/)
+- [FastAPI](https://fastapi.tiangolo.com/)
+- [MongoDB](https://www.mongodb.com/)
 ___
 API
 ---
